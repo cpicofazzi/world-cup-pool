@@ -41,19 +41,8 @@ export async function updateSession(request: NextRequest) {
 
   if (user && !url.pathname.startsWith('/payment-pending') && !url.pathname.startsWith('/auth')) {
     // Check approval status
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('is_approved')
-      .eq('id', user.id)
-      .single()
-
-    if (profile && !profile.is_approved) {
-      url.pathname = '/payment-pending'
-      return NextResponse.redirect(url)
-    }
-    
-    // If approved and on /payment-pending or signup, maybe redirect to home? 
-    // Handled normally.
+    // The Venmo gate redirect is removed to allow unapproved users to view the app UI.
+    // We handle the pending state visually in the app rather than a hard redirect.
   }
 
   return supabaseResponse
