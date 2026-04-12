@@ -33,8 +33,10 @@ export async function updateSession(request: NextRequest) {
 
   const url = request.nextUrl.clone()
   
-  if (!user && !url.pathname.startsWith('/signup') && !url.pathname.startsWith('/login') && !url.pathname.startsWith('/auth')) {
-    // If no user, redirect to signup
+  const isPublicRoute = url.pathname === '/' || url.pathname.startsWith('/leaderboard') || url.pathname.startsWith('/scores') || url.pathname.startsWith('/rules') || url.pathname.startsWith('/analytics') || url.pathname.startsWith('/picks') || url.pathname.startsWith('/signup') || url.pathname.startsWith('/login') || url.pathname.startsWith('/auth')
+  
+  if (!user && !isPublicRoute) {
+    // If no user and route is not public, redirect to signup
     url.pathname = '/signup'
     return NextResponse.redirect(url)
   }

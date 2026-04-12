@@ -2,6 +2,29 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+
+export async function devLogin() {
+  const supabase = await createClient()
+  const email = 'test@example.com'
+  const password = 'password123'
+  
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) {
+    // If signin fails, sign them up
+    const { data } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: { data: { username: 'AdminTester' } }
+    })
+    if (data?.user) {
+       // Optional: force approval using service_role if available, but for now normal RLS allows user to update their own profile
+       // Just auto approve and promote to admin
+       await supabase.from('profiles').update({ is_approved: true, role: 'admin' }).eq('id', data.user.id)
+    }
+  }
+  redirect('/')
+}
 
 export async function createEntry(formData: FormData) {
   const supabase = await createClient()

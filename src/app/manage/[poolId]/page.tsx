@@ -89,7 +89,10 @@ export default async function ManagePool({ params }: { params: Promise<{ poolId:
                         )}
                       </td>
                       <td className="px-4 py-4 text-right">
-                        <form action={toggleEntryApproval}>
+                        <form action={async (formData) => {
+                          'use server'
+                          await toggleEntryApproval(formData)
+                        }}>
                           <input type="hidden" name="pool_id" value={poolId} />
                           <input type="hidden" name="entry_id" value={p.entry_id} />
                           <input type="hidden" name="is_approved" value={p.is_approved ? 'false' : 'true'} />

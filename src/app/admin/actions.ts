@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { syncTournamentData } from '@/lib/services/footballDataSync'
 
 async function checkAdmin() {
   const supabase = await createClient()
@@ -64,5 +65,17 @@ export async function saveMatchScore(matchId: string, teamAScore: number, teamBS
     return { success: true }
   } catch (err: any) {
     return { error: err.message }
+  }
+}
+
+export async function triggerDataSync(formData?: FormData) {
+  try {
+    await checkAdmin();
+    const result = await syncTournamentData();
+    revalidatePath('/admin');
+    return result;
+  } catch (err: any) {
+    console.error('Sync Error:', err);
+    return { error: err.message };
   }
 }

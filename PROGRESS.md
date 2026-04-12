@@ -47,6 +47,13 @@ It has been updated to reflect the transition from MVP to a **Full Multi-Tenancy
 
 ---
 
+## ✅ Phase 7: Automated Data Sync (Completed)
+- [x] Integrated Football-Data.org v4 API to retrieve the official 2026 World Cup data.
+- [x] Expanded database Schema to map rigid external API IDs (`api_id`) safely to our extensible `UUID` architecture.
+- [x] Built a one-click synchronization trigger within the Super Admin dashboard capable of parsing stages, fetching real-time scores, and idempotently upserting DB rows.
+
+---
+
 ## 🔮 Future Work & Polish (Down the Line)
 - **Email Notifications**: Resend/SendGrid integration so players get an email when the Commissioner approves them, or a reminder email 24 hours before the group stage locks.
 - **Visual Bracket View**: Translating the Knockout Gauntlet picks into a classic branching "Tournament Tree" layout.

@@ -7,6 +7,8 @@ The ultimate 2026 World Cup Bracket & Prediction tool. This web application allo
 * **Supabase Authentication**: Secure user registration and login.
 * **The "Venmo Gate" Middleware**: A security layer that blocks unapproved users from accessing the main app and redirects them to a "Payment Pending" screen containing the commissioner's Venmo details.
 * **Database Schema**: Full schema prepared for Profiles, Teams, Matches, Picks, and App Settings.
+* **Live API Sync**: Connected to Football-Data.org to automatically download groups, match schedules, and score results via the Super Admin dashboard.
+
 
 ## Tech Stack
 * **Framework**: Next.js (App Router)
@@ -35,6 +37,7 @@ Copy `.env.local.example` to `.env.local` (or create one) with the configuration
 - `NEXT_PUBLIC_SUPABASE_URL` 
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY` (Needed for seeding)
+- `FOOTBALL_DATA_API_KEY` (Needed for the live matches & teams sync)
 
 ### 3. Seeding Initial Data
 To populate the database with the 48 placeholder teams and 104 matches:
