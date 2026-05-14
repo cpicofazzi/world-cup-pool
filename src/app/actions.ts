@@ -9,20 +9,69 @@ export async function devLogin() {
   const email = 'test@example.com'
   const password = 'password123'
   
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  // Step 1: Try to sign in directly
+  let { error } = await supabase.auth.signInWithPassword({ email, password })
+  
   if (error) {
-    // If signin fails, sign them up
-    const { data } = await supabase.auth.signUp({ 
+    console.log('DevLogin: Sign-in failed, creating account...', error.message)
+    // Step 2: If sign-in fails, the account doesn't exist yet — create it
+    const { error: signUpError } = await supabase.auth.signUp({ 
       email, 
       password,
       options: { data: { username: 'AdminTester' } }
     })
-    if (data?.user) {
-       // Optional: force approval using service_role if available, but for now normal RLS allows user to update their own profile
-       // Just auto approve and promote to admin
-       await supabase.from('profiles').update({ is_approved: true, role: 'admin' }).eq('id', data.user.id)
+
+    if (signUpError) {
+      console.error('DevLogin: Signup failed:', signUpError.message)
+      redirect('/')
+    }
+
+    // Step 3: After signup, sign in to get a proper session
+    const { error: retryError } = await supabase.auth.signInWithPassword({ email, password })
+    if (retryError) {
+      console.error('DevLogin: Retry sign-in failed:', retryError.message)
     }
   }
+  
+  // Step 4: Promote to admin
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    // Check if profile exists
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('id, role')
+      .eq('id', user.id)
+      .single()
+    
+    if (existingProfile) {
+      // Update existing profile — only use columns that exist: role, username
+      const { error: updateErr } = await supabase.from('profiles').update({ 
+        role: 'admin',
+        username: 'AdminTester'
+      }).eq('id', user.id)
+      if (updateErr) {
+        console.error('DevLogin: Profile update failed:', updateErr.message)
+      } else {
+        console.log('DevLogin: Profile promoted to admin')
+      }
+    } else {
+      // Profile doesn't exist yet (trigger may not have fired)
+      const { error: insertErr } = await supabase.from('profiles').insert({ 
+        id: user.id, 
+        email,
+        role: 'admin',
+        username: 'AdminTester'
+      })
+      if (insertErr) {
+        console.error('DevLogin: Profile insert failed:', insertErr.message)
+      } else {
+        console.log('DevLogin: Profile created as admin')
+      }
+    }
+  } else {
+    console.error('DevLogin: No user after auth flow!')
+  }
+  
   redirect('/')
 }
 

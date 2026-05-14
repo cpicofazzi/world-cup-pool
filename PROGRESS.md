@@ -54,6 +54,20 @@ It has been updated to reflect the transition from MVP to a **Full Multi-Tenancy
 
 ---
 
+## ✅ Phase 8: Public Access & Grand Pool UI Overhaul (Completed)
+- [x] **Public Route Access:** Middleware updated — `/`, `/leaderboard`, `/scores`, `/rules`, `/analytics`, and `/picks` are all viewable WITHOUT signing in.
+- [x] **Grand Pool "Light Premium" Theme:** Every page (Scores, Rules, Analytics, Admin, Picks, PickerCard) fully restyled from dark-mode to the unified cream/navy/gold/green design system.
+- [x] **Admin Layout Unification:** Replaced the standalone dark admin navbar with a subtle sub-nav bar that inherits the global Grand Pool header.
+- [x] **Auto Test Login (DevLogin) Fix:** Rewrote the `devLogin()` server action to handle all Supabase edge cases:
+  - Tries sign-in first, then sign-up + immediate re-sign-in for a valid session.
+  - Ensures the `profiles` row exists (handles cases where DB trigger didn't fire).
+  - Forces `role: 'admin'` and `is_approved: true` on every invocation.
+  - Button moved to top of splash page with high-visibility amber styling.
+- [x] **Read-Only Bracket Viewing:** Any user (even unauthenticated) can view any bracket. Picks are auto-locked for non-owners.
+- [x] **Scores Page Schema Fix:** Corrected Supabase query from `teams!home_team_id` to `team_a_id`/`team_b_id` columns.
+
+---
+
 ## 🔮 Future Work & Polish (Down the Line)
 - **Email Notifications**: Resend/SendGrid integration so players get an email when the Commissioner approves them, or a reminder email 24 hours before the group stage locks.
 - **Visual Bracket View**: Translating the Knockout Gauntlet picks into a classic branching "Tournament Tree" layout.

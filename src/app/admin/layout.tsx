@@ -25,27 +25,27 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col">
-      <nav className="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-8">
-            <Link href="/" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
-              FIFA Match Control
+    <div className="w-full">
+      {/* Admin sub-navigation */}
+      <div className="bg-slate-50 border-b border-border-subtle">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+          <div className="flex items-center space-x-6">
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-navy bg-brand-navy/10 px-3 py-1 rounded-full border border-brand-navy/20">
+              Admin Panel
+            </span>
+            <Link href="/admin" className="text-sm font-medium text-slate-600 hover:text-brand-navy transition-colors">
+              Match Scores
             </Link>
-            <div className="hidden md:flex space-x-4">
-              <Link href="/admin" className="text-slate-400 hover:text-white transition-colors">Match Score Entry</Link>
-              <Link href="/admin/settings" className="text-slate-400 hover:text-white transition-colors">Global Lock Settings</Link>
-            </div>
+            <Link href="/admin/settings" className="text-sm font-medium text-slate-600 hover:text-brand-navy transition-colors">
+              Settings
+            </Link>
           </div>
-          <Link href="/" className="text-sm text-slate-400 hover:text-white border border-slate-700 px-4 py-2 rounded-lg transition-colors">
-            Exit Admin
+          <Link href="/" className="text-sm text-slate-500 hover:text-brand-navy border border-border-subtle px-4 py-1.5 rounded transition-colors">
+            ← Exit Admin
           </Link>
         </div>
-      </nav>
-      {/* Mobile nav fallback if needed can be added later */}
-      <main className="flex-grow p-4 md:p-8">
-        {children}
-      </main>
+      </div>
+      {children}
     </div>
   )
 }

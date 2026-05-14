@@ -11,9 +11,26 @@ export default async function Home() {
     return (
       <div className="flex flex-col items-center justify-center p-8 mt-12">
         <div className="z-10 text-center max-w-4xl mx-auto">
-          <p className="text-xl md:text-2xl text-slate-600 mb-12 font-serif italic">
+          <p className="text-xl md:text-2xl text-slate-600 mb-8 font-serif italic">
             The ultimate 2026 World Cup Bracket platform. Secure your brackets, challenge friends in private pools, and follow the live global leaderboard.
           </p>
+
+          {/* AUTO TEST LOGIN — PROMINENT POSITION */}
+          <div className="mb-12 inline-block bg-amber-50 p-6 rounded-xl border-2 border-amber-300 shadow-lg">
+            <h4 className="text-amber-800 font-bold text-sm tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+              Quick Access — Test Mode
+            </h4>
+            <p className="text-amber-700 text-sm mb-4 max-w-sm">One-click admin login. No signup needed. Use this to test data sync, brackets, pools, and scoring.</p>
+            <form action={async (formData) => {
+              'use server'
+              await devLogin()
+            }}>
+              <button type="submit" className="w-full px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black rounded-lg shadow-md transition-transform active:scale-95 uppercase tracking-wider text-lg">
+                ⚡ Login as Admin Tester
+              </button>
+            </form>
+          </div>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
             <Link href="/signup" className="w-full sm:w-auto px-8 py-4 bg-brand-navy hover:bg-brand-navy/90 text-white font-bold rounded shadow-md text-lg transition-transform transform hover:-translate-y-0.5">
@@ -31,22 +48,6 @@ export default async function Home() {
                   &rarr; See an example Pool Leaderboard
                </Link>
             </div>
-          </div>
-
-          <div className="mt-16 sm:mt-24 inline-block bg-slate-50 p-6 rounded-xl border border-border-subtle shadow-sm">
-            <h4 className="text-brand-navy font-bold text-sm tracking-widest uppercase mb-4 flex items-center justify-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
-              Auto Test Login
-            </h4>
-            <p className="text-slate-500 text-sm mb-4 max-w-xs">Bypass the auth flow instantly to test platform functionality with an admin account.</p>
-            <form action={async (formData) => {
-              'use server'
-              await devLogin()
-            }}>
-              <button type="submit" className="w-full px-6 py-3 bg-brand-green text-brand-navy hover:bg-brand-green/90 font-black rounded shadow-sm transition-transform active:scale-95 uppercase tracking-wider">
-                ⚡ Login as Admin Tester
-              </button>
-            </form>
           </div>
         </div>
       </div>
